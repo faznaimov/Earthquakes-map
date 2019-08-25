@@ -1,5 +1,4 @@
 var URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
-var mapboxURL = "https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?"
 
 d3.json(URL, function (data) {
     createFeatures(data.features)
@@ -51,12 +50,57 @@ function createFeatures(earthquakeData) {
 };
 
 function createMap(earthquakes) {
-    var streetmap = L.tileLayer(`${mapboxURL}access_token=${mapboxKey}`);
+    
+    var streetmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+        attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+        maxZoom: 18,
+        id: "mapbox.streets",
+        accessToken: API_KEY
+    });
+    
+    var darkmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+        attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+        maxZoom: 18,
+        id: "mapbox.dark",
+        accessToken: API_KEY
+    });
+
+    var physicalmap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}.png?access_token={accessToken}"', {
+	    attribution: 'Tiles &copy; Esri &mdash; Source: US National Park Service',
+        maxZoom: 18,
+        id: "mapbox.physical",
+        accessToken: API_KEY
+});
+    
+    // Define a baseMaps object to hold our base layers
+    var baseMaps = {
+        "Street Map": streetmap,
+        "Dark Map": darkmap,
+        "Physical Map": physicalmap
+    };
+    
+    // Create overlay object to hold our overlay layer
+    var overlayMaps = {
+        Earthquakes: earthquakes
+    };
+    
+    // Create our map, giving it the streetmap and earthquakes layers to display on load
     var myMap = L.map("map", {
-        center: [20, -20],
-        zoom: 2.5,
+        center: [
+          37.09, -95.71
+        ],
+        zoom: 5,
         layers: [streetmap, earthquakes]
     });
+    
+    // Create a layer control
+    // Pass in our baseMaps and overlayMaps
+    // Add the layer control to the map
+    L.control.layers(baseMaps, overlayMaps, {
+        collapsed: false
+    }).addTo(myMap);
+
+    // Legend
     var legend = L.control({ position: 'bottomright' });
 
     legend.onAdd = function (map) {
