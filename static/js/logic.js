@@ -1,3 +1,5 @@
+const API_KEY = "pk.eyJ1IjoiZmF6bGlkZGluIiwiYSI6ImNqejkwZTE2ejAwYzgzbXA1cHp4a3g3aGYifQ.lg4_5EsumuwP0Xso1dM-Gg";
+
 var URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
 
 d3.json(URL, function (data) {
