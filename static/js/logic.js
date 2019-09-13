@@ -1,3 +1,4 @@
+const MB_KEY = "pk.eyJ1IjoiZmF6bGlkZGluIiwiYSI6ImNrMDc4NDZzZTQ0MmYzbW12Z3l5ZnV1NmYifQ._ri_PUnAw3x2qnUnvij1Fw"
 const API_KEY = "pk.eyJ1IjoiZmF6bGlkZGluIiwiYSI6ImNqejkwZTE2ejAwYzgzbXA1cHp4a3g3aGYifQ.lg4_5EsumuwP0Xso1dM-Gg";
 
 var URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
@@ -57,14 +58,14 @@ function createMap(earthquakes) {
         attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
         maxZoom: 18,
         id: "mapbox.streets",
-        accessToken: API_KEY
+        accessToken: MB_KEY
     });
     
     var darkmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
         attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
         maxZoom: 18,
         id: "mapbox.dark",
-        accessToken: API_KEY
+        accessToken: MB_KEY
     });
 
     var physicalmap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}.png?access_token={accessToken}"', {
